@@ -13,7 +13,7 @@ class ListingController extends Controller
     {
 
         return view('listings.index', [
-            'listings' => Listing::latest()->filterTags(request(['tag', 'search']))->paginate(2)
+            'listings' => Listing::latest()->filterTags(request(['tag', 'search']))->paginate(6)
         ]);
     }
 
@@ -41,15 +41,20 @@ class ListingController extends Controller
             'title' => 'required',
             'company' => ['required', 'unique:listings'],
             'location' => 'required',
-            'website' => ['required','url'],
+            'website' => ['required', 'url'],
             'email' => ['required', 'email'],
             'tags' => 'required',
             'description' => 'required'
 
         ]);
+
+        if ($request->hasFile('logo')) {
+            $formFields['logo'] = $request->file('logo')->store('logos', 'public');
+        }
+
         Listing::create($formFields);
 
-        return redirect('/')->with('message','Listing created successfully');
+        return redirect('/')->with('message', 'Listing created successfully');
     }
 }
 
