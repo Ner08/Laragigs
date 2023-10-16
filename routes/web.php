@@ -20,17 +20,16 @@ use App\Http\Controllers\ListingController;
 
 //LISTINGS
 
-//All listings
+//All Listings
 Route::get('/', [ListingController::class, 'index']);
 
-//Show create post view
-
+//Show Create Post View
 Route::get('/listings/create', [ListingController::class, 'create'])->middleware('auth');
 
-//Store listing data
+//Store Listing Data
 Route::post('/listings', [ListingController::class, 'store'])->middleware('auth');
 
-//Show edit form
+//Show Edit Form
 Route::get('listings/{listing}/edit', [ListingController::class, 'edit'])->middleware('auth');
 
 //Update Listing
@@ -38,6 +37,9 @@ Route::put('/listings/{listing}', [ListingController::class, 'update'])->middlew
 
 //Delete Listing
 Route::delete('/listings/{listing}', [ListingController::class, 'destroy'])->middleware('auth');
+
+//Manage Listings
+Route::get('/listings/manage',[ListingController::class, 'manage'])->middleware('auth');
 
 //Single listing
 Route::get('/listings/{listing}', [ListingController::class, 'show']);
@@ -59,8 +61,7 @@ Route::get('/login', [UserController::class, 'login'])->name('login')->middlewar
 Route::post('/users/authenticate', [UserController::class, 'authenticate']);
 
 //Log User Out
-Route::post('/logout', [UserController::class, 'logout'])->middleware('auth');;
-
+Route::post('/logout', [UserController::class, 'logout'])->middleware('auth');
 
 
 
