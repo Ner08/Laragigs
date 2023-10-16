@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class ListingController extends Controller
 {
 
-    //Show all listings
+    //Show All Listings
     public function index()
     {
 
@@ -17,7 +17,7 @@ class ListingController extends Controller
         ]);
     }
 
-    //Show single listing
+    //Show Single Listing
 
     public function show(Listing $listing)
     {
@@ -26,7 +26,7 @@ class ListingController extends Controller
         ]);
     }
 
-    //Show create form
+    //Show Create Form
 
     public function create()
     {
@@ -34,7 +34,7 @@ class ListingController extends Controller
     }
 
 
-    //Store listing data
+    //Store Listing Data
     public function store(Request $request)
     {
         $formFields = $request->validate([
@@ -52,10 +52,52 @@ class ListingController extends Controller
             $formFields['logo'] = $request->file('logo')->store('logos', 'public');
         }
 
+        $formFields['user_id']=auth()->id();
+
         Listing::create($formFields);
 
         return redirect('/')->with('message', 'Listing created successfully');
     }
+
+
+    //Show Edit Form
+    public function edit(Listing $listing)
+    {
+        return view('listings.edit', [
+            'listing' => $listing
+        ]);
+    }
+
+    //Update Form
+    public function update(Request $request, Listing $listing)
+    {
+
+        $formFields = $request->validate([
+            'title' => 'required',
+            'company' => ['required'],
+            'location' => 'required',
+            'website' => ['required', 'url'],
+            'email' => ['required', 'email'],
+            'tags' => 'required',
+            'description' => 'required'
+        ]);
+
+        if ($request->hasFile('logo')) {
+            $formFields['logo'] = $request->file('logo')->store('logos', 'public');
+        }
+
+        $listing->update($formFields);
+
+        return back()->with('message', 'Listing created successfully');
+    }
+
+    //Delete Listing
+    public function destroy(Listing $listing){
+        $listing->delete();
+
+        return redirect('/')->with('message', "Listing deleted successfully!");
+    }
+
 }
 
 //Commmon Resource Routes:

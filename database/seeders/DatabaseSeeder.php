@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Models\Listing;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -15,10 +16,22 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
-        Listing::factory(6)->create();
+        $user=User::factory()->create([
+            'name'=>'John Doe',
+            'email' => 'john@gmail.com'
+        ]);
+
+        Listing::factory(6)->create([
+            'user_id'=>$user->id
+        ]);
 
 
+        //\App\Models\User::factory(10)->create();
 
+        // \App\Models\User::factory()->create([
+        //     'name' => 'Test User',
+        //     'email' => 'test@example.com',
+        // ]);
 
 
 
@@ -66,12 +79,5 @@ class DatabaseSeeder extends Seeder
                 release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker
                 including versions of Lorem Ipsum."
         ]); */
-
-        //\App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
     }
 }
